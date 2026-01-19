@@ -1,21 +1,28 @@
-FROM php:8.3-fpm
+FROM php:8.3-cli
 
 WORKDIR /var/www/html
 
+# Install dependencies
 RUN apt-get update && apt-get install -y \
-    curl wget git unzip libzip-dev libonig-dev \
+    curl git unzip libzip-dev libonig-dev \
     && docker-php-ext-install pdo_mysql mbstring zip \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/*
 
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- \
+    --install-dir=/usr/bin --filename=composer
 
+# Copy project
 COPY . .
 
+# Install Laravel dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-RUN chown -R www-data:www-data storage bootstrap/cache
+# Set permissions
+RUN chmod -R 775 storage bootstrap/cache
 
+# Expose port
 EXPOSE 8000
 
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
-
+# Start server with public/ as root
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]
