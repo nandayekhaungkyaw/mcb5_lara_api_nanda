@@ -1,0 +1,46 @@
+# Ignore node modules
+node_modules/
+npm-debug.log
+yarn-error.log
+pnpm-debug.log
+
+# Ignore vendor (Composer will install inside the container)
+vendor/
+
+# Laravel cache & logs
+storage/logs/
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Git
+.git/
+.gitignore
+
+# Docker
+.docker/
+docker-compose.yml
+# Dockerfile
+.dockerignore
+
+# IDE & editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build directories
+# /public/hot
+# /public/storage
+# /public/vendor
+# /build/
+# dist/
